@@ -1,12 +1,13 @@
 
 
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-canvas.height = 1000 * devicePixelRatio;
+
 
 var butPushed = 0;
 var canvas = document.getElementById('firstCanvas');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+canvas.height = 1000 * devicePixelRatio;
 var c = canvas.getContext('2d');
 c.strokeStyle = 'rgb(200, 0,0)';
 c.lineWidth= 1;
@@ -40,7 +41,7 @@ const normalizeX = (x) =>{
     return (window.innerWidth/2 + 30*x)
 }
 const normalizeY = (y) =>{
-    return (window.innerHeight/2 - 20*(y-15))
+    return (window.innerHeight/2 - 18*(y-25))
 }
 
 c.beginPath();
