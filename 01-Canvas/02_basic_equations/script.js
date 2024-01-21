@@ -52,6 +52,7 @@ const normalizeY = (y) =>{
 }
 
 // // move(100,300);
+
 // c.moveTo(normalizeX(0), normalize(0));
 // move(normalizeX(100+33), normalize(0));
 // c.moveTo(normalize((33)), normalize(0));
@@ -64,12 +65,29 @@ var dt = 0.00005;
 const dxdt=(x,y,z) => {return 400*(y-x)}
 const dydt=(x,y,z)=> {return -120*x-10*(x*z) +280*y}
 const dzdt=(x,y,z) => {return 10*x*y  - 30*z}
+
+//[  0.6911211,  0.5110536, -0.5110536;
+// -0.5110536,  0.8455606,  0.1544394;
+// 0.5110536,  0.1544394,  0.8455606 ]
+transformX = (x, y, z) =>{
+    // return 0.6911211*x + 0.5110536*y + -0.5110536*z;
+    return x;
+}
+transformY = (x, y, z) =>{
+    // return -0.5110536*x +  0.8455606*y +  0.1544394*z;
+    return y;
+}
+transformZ = (x, y, z) =>{
+    // 0.5110536*x + 0.1544394*y +  0.8455606*z;
+    return z;
+}
 for(let i=0; i<100000; i++){
     
     // a = a.then(()=>{command(move, (x*i), y*i*i)}).then(() => {console.log("Done I guess!")});
     a = a.then(
             () => {
-                command(move, normalizeX(y), normalizeY(z))
+                command(move, normalizeX(transformY(x,y,z)), normalizeY(transformZ(x,y,z)));
+                console.log(normalizeX(transformY(x,y,z)));
             }
         )
         .then(
