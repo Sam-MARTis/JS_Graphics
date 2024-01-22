@@ -13,13 +13,13 @@ c.strokeStyle = 'rgb(200, 0,0)';
 c.lineWidth= 1;
 
 var count = 0;
-var x=-7.13
-var y=-7.11
-var z=25.41
+var x=0.13;
+var y=5.11;
+var z=0;
 var b = 0;
 var g = 0;
 var r = 0;
-var dt = 0.005;
+var dt = 0.01;
 a = Promise.resolve();
 
 
@@ -36,17 +36,17 @@ const clearScreen = () => {
 }
 const butClick = () => {
     butPushed = 1;
-} 
+}
 const reloadScreen = () => {
     location.reload();
 }
 
 
 const normalizeX = (x) =>{
-    return (window.innerWidth/2 + 30*x);
+    return (window.innerWidth/2 + 20*x)
 }
 const normalizeY = (y) =>{
-    return (window.innerHeight/2 - 18*(y));
+    return (window.innerHeight/2 - 20*(y+5))
 }
 
 c.beginPath();
@@ -57,7 +57,7 @@ const command = (func, x, y, k) => {
         setTimeout(() => {
             func(x, y, k);
             resolve();
-        }, 1000);
+        }, 1);
     });
 };
 
@@ -77,6 +77,7 @@ const move = (x, y, col) => {
     else{
         count = 1;
     }
+    console.log(x, y, z);
     c.moveTo(prev_pos.x, prev_pos.y);
     
     c.lineTo(x, y);
@@ -93,19 +94,18 @@ const move = (x, y, col) => {
 
 
 // c.moveTo(normalizeX(y), normalizeY(z));
-
-const dxdt=(x,y,z) => {return 10*(y-x)}
-const dydt=(x,y,z)=> {return x*(28-z)-y}
-const dzdt=(x,y,z) => {return x*y-8*z/3}
-
-
+const alpha = 1.89;
+const dxdt=(x,y,z) => {return -alpha*x - 4*y - 4*z - y**2;}
+const dydt=(x,y,z)=> {return -alpha*y - 4*z - 4*x - z**2}
+const dzdt=(x,y,z) => {return -alpha*z - 4*x - 4*y - x**2}
 
 
-for(let i=0; i<100000; i++){
+for(let i=0; i<1000000; i++){
     
     a = a.then(
             () => {
-                // rotatedAxes = rotate(x,y,z);
+                
+                // console.log (rotatedAxes);
                 command(move, normalizeX(x), normalizeY(z), {r:r, g:g, b:b});
             }
         )

@@ -78,9 +78,9 @@ const move = (x, y, col) => {
 // move(normalizeX(100+33), normalize(0));
 // c.moveTo(normalize((33)), normalize(0));
 // move(normalize(33), normalize(100));
-var x=1.960
-var y=2.04
-var z=12.51
+var x=1.960;
+var y=2.04;
+var z=12.51;
 var b = 0;
 var g = 0;
 var r = 0;
@@ -104,7 +104,9 @@ const rotate = (x, y, z) => {
     // return { x: newX, y: newY, z: newZ };
     return {x:x, y:y, z:z}
 };
-for(let i=0; i<100000; i++){
+
+const proceed = () =>{
+for(let i=0; i<200000; i++){
     
     // a = a.then(()=>{command(move, (x*i), y*i*i)}).then(() => {console.log("Done I guess!")});
     a = a.then(
@@ -151,3 +153,5 @@ for(let i=0; i<100000; i++){
     
 }
 
+}
+proceed();
