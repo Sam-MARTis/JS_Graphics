@@ -8,7 +8,13 @@ let slides = document.getElementsByClassName("Slides");
 //     }
 // }
 var i = 0;
-
+let timeSinceLastSlide = 0;
+const autoSlide = () => {
+    timeSinceLastSlide += 100;
+    if(timeSinceLastSlide >= 4000){
+        nextSlide();
+    }
+}
 const SlideShow = (i) => {
     for(let k = 0; k < slides.length; k++) {
         if(k!=i){
@@ -24,8 +30,10 @@ const SlideShow = (i) => {
 
 }
 const nextSlide = () => {
+    timeSinceLastSlide=0;
     console.log(i);
     i++;
     if(i==slides.length) i=0;
     SlideShow(i);
 }
+setInterval(autoSlide, 100)
