@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas</title>
+    <style>
+        canvas{
+            border: 1px solid black;
+
+
+        }
+        body{
+            margin: 0px;
+        }
+        button{
+            left: 100px;
+            top: 100px;
+            z-index: 100;
+            background-color:beige;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <button type="button" onclick="butClick()">Speed up</button>
+        <button type="button" onclick="clearScreen()">Clear </button>
+        <button type="button" onclick="reloadScreen()">New</button>
+        <span> Attractors: </span>
+        <button type="button" onclick="chen()">Clear </button>
+        <button type="button" onclick="lorentz()">New</button>
+
+    
+    </div>
+    <canvas id="firstCanvas">
+    </canvas>
+    <script src="script.js"></script>
+</body>
+</html>
