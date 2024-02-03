@@ -4,6 +4,7 @@ let flowfield;
 let flowfieldanimation;
 let mouseX = window.width / 2;;
 let mouseY = window.height / 2;
+let lasttime;
 window.onload = () => {
     canvas =document.getElementById("canvas1");
     ctx = canvas.getContext("2d");
@@ -12,25 +13,25 @@ window.onload = () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     flowfield = new FlowFieldEffect(ctx, window.innerWidth, window.innerHeight);
-    flowfield.animate();
+    flowfield.animate(0);
     
 };
 const canvasResize = () => {
     cancelAnimationFrame(flowfieldanimation);
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    console.log("canvasResize");
+    // console.log("canvasResize");
     flowfield = new FlowFieldEffect(ctx, window.innerWidth, window.innerHeight);
     
     flowfield.animate();
 };
 const mouseMove = (e) => {
-    console.log(e);
+    // console.log(e);
     mouseX=e.layerX;
     mouseY = e.layerY;
 }
 const mouseClick = (e) =>{
-    console.log(e);
+    // console.log(e);
 }
 
 addEventListener('resize', canvasResize);
@@ -52,7 +53,7 @@ class FlowFieldEffect {
         this.#width = width;
         this.#height = height;
         this.#ctx.strokeStyle='#FFFFFF';
-        console.log("Loaded");
+        // console.log("Loaded");
         
         // this.#draw(10, 10)
     }
@@ -66,14 +67,17 @@ class FlowFieldEffect {
         
 
     }
-    animate = () =>{
+    animate = (timestamp) =>{
+        const deltime = timestamp - lasttime;
+        lasttime = timestamp;
+        console.log(`Refresh frequency: ${1000/deltime}`);
         this.#ctx.clearRect(0, 0, this.#width, this.#height);
         
         this.#draw(mouseX+ Math.sin(this.angle)*10, mouseY+ Math.cos(this.angle)*10);
         this.angle+=0.3
         // this.x+=0.1;
         // x+=1;
-        console.log("Animating");
+        // console.log("Animating");
         flowfieldanimation =requestAnimationFrame(this.animate.bind(this));
 
     }
