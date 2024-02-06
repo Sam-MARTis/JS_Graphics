@@ -4,6 +4,8 @@ let fractalmine;
 let fractalAnimation;
 let offset = 0;
 let paramValues = new Object();
+let rotateNow;
+let autoNow;
 
 
 
@@ -12,7 +14,7 @@ const getRandomInt = (rangeL, rangeH) =>{
 }
 
 let totalCounts = 0;
-let countLimit = 5;
+let countLimit = 6;
 let branches = getRandomInt(3, 8);
 
 let color = `hsl(${Math.random()*360}, 100%, 50%)`
@@ -23,18 +25,23 @@ let randomizeButton = document.getElementById('randomize');
 
 
 const resetParamValues = () => {
+    let scaleLen = .3+ Math.random()*0.5
     paramValues = {
         'lineWidth' : 5 + Math.random()*3,
-        'scaleFactorLen' : 0.3+ Math.random()*0.5,
-        'scaleFactorWidth' : 0.3+ Math.random()*0.4,
+        'scaleFactorLen' : scaleLen,
+        'scaleFactorWidth' : (0.3+ Math.random()*0.4)/((1+scaleLen)),
        
         'angleRate' : 0.2+Math.random()*5,
-        'divergence' : Math.random()*4,
+        'divergence1' : Math.random()*3.14,
+        'divergence2' : Math.random()*3.14,
         'scaleFactorAngleRate' : 200*Math.random(),
         'color' : `hsl(${Math.random()*560}, 100%, 50%)`
     }
 }
-
+const rotate =()=>{
+    ctx.rotate(1 * Math.PI/180)
+    reset();
+}
 window.onload = () => {
     canvas =document.getElementById('canvas1');
     ctx = canvas.getContext('2d');
@@ -44,8 +51,10 @@ window.onload = () => {
     
     
     reset();
+    rotateNow=setInterval(rotate, 10);
     
 };
+
 
 
 
@@ -76,7 +85,7 @@ const randomize = () =>{
     
     let newBranches = 3 +getRandomInt(0, 5);
     color = `hsl(${Math.random()*360}, 100%, 50%)`;
-    offset = Math.random()*6.28;
+    offset = 3.14*(Math.random()>0.5);
     while (newBranches== branches){
         newBranches = 3 +getRandomInt(0, 5);
     }
@@ -85,13 +94,39 @@ const randomize = () =>{
     reset();
 
 }
+const decideRotation = () =>{
+    if(rotateBut.checked){
+        clearInterval(rotateNow);
+        rotateNow = setInterval(rotate, 10);
 
+    }
+    else{
+        clearInterval(rotateNow);
+        console.log('No Rotate');
 
+    }
+}
+const decideAuto = () =>{
+    if(autoBut.checked){
+        clearInterval(autoNow);
+        autoNow = setInterval(randomize, 1000);
+        console.log('auto mode');
 
+    }
+    else{
+        clearInterval(autoNow);
+        console.log('No auto');
+
+    }
+}
+
+let autoBut = document.getElementById("checkAuto");
+let rotateBut = document.getElementById("checkRotate");
 addEventListener('resize', reset);
 addEventListener('click', incSize);
 randomizeButton.addEventListener('click', randomize);
-
+rotateBut.addEventListener('click', decideRotation )
+autoBut.addEventListener('click', decideAuto )
 // setInterval(randomize, 200);
 
 
@@ -118,14 +153,14 @@ class Fractal {
         this.#ctx.strokeStyle=color;
 
         
-        this.length = Math.min(this.#width/4, this.#height/4);
+        this.length = Math.min(this.#width/5, this.#height/5);
         
         this.lineWidth = params['lineWidth'];
         this.scaleFactorLen = params['scaleFactorLen'];
-        this.scaleFactorWidth = params['scakeFactorWidth'];
+        this.scaleFactorWidth = params['scaleFactorWidth'];
         
         this.angleRate = params['angleRate']
-        this.divergence = params['divergence']
+        this.divergence2 = params['divergence2']
         
         this.scaleFactorAngleRate = params['scaleFactorAngleRate']
     }
@@ -145,7 +180,7 @@ class Fractal {
         let xmov = length*Math.cos(angleTo);
         let ymov = length*Math.sin(-angleTo);
         
-        lineWidth*=(this.scaleFactorWidth **1)
+        lineWidth *= (this.scaleFactorWidth **1)
         this.#ctx.lineWidth = lineWidth;
         this.drawAngle(angleTo, posx, posy, length);
         posx+=xmov/2;
@@ -159,8 +194,8 @@ class Fractal {
             this.animate(angleTo, 1.2, angleRate, posx, posy, length/2, counter-1, lineWidth); 
             posx+= xmov/2;
             posy+= ymov/2;
-            this.animate(angleTo, -this.divergence, angleRate, posx, posy,length, counter-1, lineWidth);
-            this.animate(angleTo, this.divergence, angleRate, posx, posy, length, counter-1, lineWidth); 
+            this.animate(angleTo, -this.divergence2, angleRate, posx, posy,length, counter-1, lineWidth);
+            this.animate(angleTo, this.divergence2, angleRate, posx, posy, length, counter-1, lineWidth); 
         }
 
     }

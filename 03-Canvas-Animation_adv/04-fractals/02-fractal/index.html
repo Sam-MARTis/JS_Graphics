@@ -7,7 +7,18 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <button id="randomize">Randomize!</button>
+    <!-- <button id="randomize">Randomize!</button> -->
+    <div id="options">
+        <button id="randomize">Randomize!</button>
+        <div class="subOption">
+            <label for="checkAuto">Autoplay?</label>
+            <input id='checkAuto' class="checkbox" type="checkbox" value="jello">
+        </div>
+        <div class="subOption">
+            <label for="checkRotate">Rotate?</label>
+            <input id="checkRotate" class="checkbox" type="checkbox" checked>
+        </div>
+    </div>
     <canvas id="canvas1"></canvas>
     <script src="main.js"></script>
 </body>
