@@ -75,7 +75,7 @@ class Fractal {
         this.#ctx.stroke();
 
     }
-    animate(angleTo = 1.57, delAngle = 1,posx = this.#width/2, posy = this.#height/2, length = 100, counter = this.totalCounts, lineWidth = this.lineWidth){
+    animate(angleTo = 1.57, delAngle = 1,posx = this.#width/2, posy = this.#height/2, length = this.#width/6, counter = this.totalCounts, lineWidth = this.lineWidth){
         this.count+=1;
         angleTo+=1.57*delAngle;
         let xmov = length*Math.cos(angleTo);
