@@ -46,7 +46,7 @@ const incSize = () => {
 setInterval(incSize, 1000)
 
 
-addEventListener('resize', canvasResize);
+addEventListener('resize', reset);
 addEventListener('click', incSize);
 
 

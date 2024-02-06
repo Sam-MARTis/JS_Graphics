@@ -3,6 +3,25 @@ let ctx;
 let fractalmine;
 let fractalAnimation;
 let offset = 0;
+let paramValues = new Object();
+// this.#height = height;
+//         this.length = Math.min(this.#width/4, this.#height/4);
+//         this.#ctx.strokeStyle=color;
+//         this.lineWidth = 5 + Math.random()*3
+//         this.scaleFactorLen = 0.3+ Math.random()*0.5; 
+//         this.scaleFactorWidth = 0.3+ Math.random()*0.4; 
+//         this.totalCounts = count;
+//         this.angleRate = 3.57;
+        
+//         1 = 1;
+//         1 = 1.0;
+//         this.divergence = Math.random()*4;
+//         this.offset = offset
+//         this.branches = branches;
+//         this.scaleFactorAngleRate = 200*Math.random()
+
+
+
 const getRandomInt = (rangeL, rangeH) =>{
     return Math.floor(rangeL) + Math.floor(Math.random() * (rangeH-rangeL))
 }
@@ -13,18 +32,34 @@ let branches = getRandomInt(3, 8);
 
 let color = `hsl(${Math.random()*360}, 100%, 50%)`
 let randomizeButton = document.getElementById('randomize');
+
+
+
+
+
 window.onload = () => {
-    canvas =document.getElementById("canvas1");
-    ctx = canvas.getContext("2d");
+    canvas =document.getElementById('canvas1');
+    ctx = canvas.getContext('2d');
+
+
+    paramValues = {
+        'lineWidth' : 5 + Math.random()*3,
+        'scaleFactorLen' : 0.3+ Math.random()*0.5,
+        'scaleFactorWidth' : 0.3+ Math.random()*0.4,
+       
+        'angleRate' : 0.2+Math.random()*5,
+        'divergence' : Math.random()*4,
+        'scaleFactorAngleRate' : 200*Math.random(),
+        'color' : `hsl(${Math.random()*360}, 100%, 50%)`
+    }
     
     
-    canvasResize();
+    reset();
     
 };
 
 
-const canvasResize = () => {
-    cancelAnimationFrame(fractalAnimation);
+const reset = () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     ctx.lineCap="square";
@@ -40,7 +75,7 @@ const canvasResize = () => {
 const incSize = () => {
     if(totalCounts < countLimit) {
     totalCounts+=1
-    canvasResize();
+    reset();
     }
 
 }
@@ -56,14 +91,20 @@ const randomize = () =>{
         newBranches = 3 +getRandomInt(0, 5);
     }
     branches = newBranches;
-    canvasResize();
+    reset();
 
 }
 
 
-addEventListener('resize', canvasResize);
+
+addEventListener('resize', reset);
 addEventListener('click', incSize);
 randomizeButton.addEventListener('click', randomize);
+
+
+
+
+
 
 
 
@@ -78,19 +119,20 @@ class Fractal {
         this.#ctx = ctx;
         this.#width = width;
         this.#height = height;
-        this.length = Math.min(this.#width/4, this.#height/4);
+        this.totalCounts = count;
+        this.offset = offset
+        this.branches = branches;
         this.#ctx.strokeStyle=color;
+        
+        this.length = Math.min(this.#width/4, this.#height/4);
+        
         this.lineWidth = 5 + Math.random()*3
         this.scaleFactorLen = 0.3+ Math.random()*0.5; 
         this.scaleFactorWidth = 0.3+ Math.random()*0.4; 
-        this.totalCounts = count;
-        this.angleRate = 3.57;
         
-        this.scalePowLen = 1;
-        this.scalePowWidth = 1.0;
+        this.angleRate = 0.2+Math.random()*5;
         this.divergence = Math.random()*4;
-        this.offset = offset
-        this.branches = branches;
+        
         this.scaleFactorAngleRate = 200*Math.random()
     }
 
@@ -109,12 +151,12 @@ class Fractal {
         let xmov = length*Math.cos(angleTo);
         let ymov = length*Math.sin(-angleTo);
         
-        lineWidth*=(this.scaleFactorWidth **this.scalePowWidth)
+        lineWidth*=(this.scaleFactorWidth **1)
         this.#ctx.lineWidth = lineWidth;
         this.drawAngle(angleTo, posx, posy, length);
         posx+=xmov/2;
         posy+=ymov/2;
-        length*=(this.scaleFactorLen**this.scalePowLen);
+        length*=(this.scaleFactorLen**1);
         angleRate *= this.scaleFactorAngleRate;
 
         if(counter>0){
@@ -131,7 +173,6 @@ class Fractal {
     callAnimation(){
         for (let i = 0; i < branches; i++) {
             this.animate(offset= this.offset+ (i* 6.28/this.branches));
-            // this.animate(offset = 1)
             }
     }
 
