@@ -4,21 +4,6 @@ let fractalmine;
 let fractalAnimation;
 let offset = 0;
 let paramValues = new Object();
-// this.#height = height;
-//         this.length = Math.min(this.#width/4, this.#height/4);
-//         this.#ctx.strokeStyle=color;
-//         this.lineWidth = 5 + Math.random()*3
-//         this.scaleFactorLen = 0.3+ Math.random()*0.5; 
-//         this.scaleFactorWidth = 0.3+ Math.random()*0.4; 
-//         this.totalCounts = count;
-//         this.angleRate = 3.57;
-        
-//         1 = 1;
-//         1 = 1.0;
-//         this.divergence = Math.random()*4;
-//         this.offset = offset
-//         this.branches = branches;
-//         this.scaleFactorAngleRate = 200*Math.random()
 
 
 
@@ -37,11 +22,7 @@ let randomizeButton = document.getElementById('randomize');
 
 
 
-window.onload = () => {
-    canvas =document.getElementById('canvas1');
-    ctx = canvas.getContext('2d');
-
-
+const resetParamValues = () => {
     paramValues = {
         'lineWidth' : 5 + Math.random()*3,
         'scaleFactorLen' : 0.3+ Math.random()*0.5,
@@ -50,13 +31,22 @@ window.onload = () => {
         'angleRate' : 0.2+Math.random()*5,
         'divergence' : Math.random()*4,
         'scaleFactorAngleRate' : 200*Math.random(),
-        'color' : `hsl(${Math.random()*360}, 100%, 50%)`
+        'color' : `hsl(${Math.random()*560}, 100%, 50%)`
     }
+}
+
+window.onload = () => {
+    canvas =document.getElementById('canvas1');
+    ctx = canvas.getContext('2d');
+
+
+    resetParamValues();
     
     
     reset();
     
 };
+
 
 
 const reset = () => {
@@ -69,7 +59,7 @@ const reset = () => {
     
     
     console.log("canvasResize");
-    fractalmine = new Fractal(ctx, window.innerWidth, window.innerHeight, totalCounts, branches, offset);
+    fractalmine = new Fractal(ctx, window.innerWidth, window.innerHeight, totalCounts, branches, offset, paramValues);
     fractalmine.callAnimation()
 };
 const incSize = () => {
@@ -91,6 +81,7 @@ const randomize = () =>{
         newBranches = 3 +getRandomInt(0, 5);
     }
     branches = newBranches;
+    resetParamValues()
     reset();
 
 }
@@ -100,6 +91,8 @@ const randomize = () =>{
 addEventListener('resize', reset);
 addEventListener('click', incSize);
 randomizeButton.addEventListener('click', randomize);
+
+// setInterval(randomize, 200);
 
 
 
@@ -115,7 +108,7 @@ class Fractal {
     #width
     #height
   
-    constructor(ctx, width, height, count, branches, offset) {
+    constructor(ctx, width, height, count, branches, offset, params) {
         this.#ctx = ctx;
         this.#width = width;
         this.#height = height;
@@ -123,17 +116,18 @@ class Fractal {
         this.offset = offset
         this.branches = branches;
         this.#ctx.strokeStyle=color;
+
         
         this.length = Math.min(this.#width/4, this.#height/4);
         
-        this.lineWidth = 5 + Math.random()*3
-        this.scaleFactorLen = 0.3+ Math.random()*0.5; 
-        this.scaleFactorWidth = 0.3+ Math.random()*0.4; 
+        this.lineWidth = params['lineWidth'];
+        this.scaleFactorLen = params['scaleFactorLen'];
+        this.scaleFactorWidth = params['scakeFactorWidth'];
         
-        this.angleRate = 0.2+Math.random()*5;
-        this.divergence = Math.random()*4;
+        this.angleRate = params['angleRate']
+        this.divergence = params['divergence']
         
-        this.scaleFactorAngleRate = 200*Math.random()
+        this.scaleFactorAngleRate = params['scaleFactorAngleRate']
     }
 
     drawAngle = (angle, posx, posy, length) => {
